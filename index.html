@@ -1,0 +1,278 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>What’s for tea?</title>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#f2f5f1;--sf:#fff;--ink:#17231e;--mu:#5b6962;--ln:#d3dcd5;--tom:#c93a22;--on:#fff;--bas:#2b6a4d;--bt:#e0efe6;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);color-scheme:light}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#111a16;--sf:#1a2520;--ink:#e9f1ec;--mu:#9fb0a6;--ln:#2c3a33;--tom:#ff7b5e;--on:#1a0d09;--bas:#7fd0a1;--bt:#1f3a2c;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#111a16;--sf:#1a2520;--ink:#e9f1ec;--mu:#9fb0a6;--ln:#2c3a33;--tom:#ff7b5e;--on:#1a0d09;--bas:#7fd0a1;--bt:#1f3a2c;color-scheme:dark}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 16px/1.5 'Bricolage Grotesque',system-ui,-apple-system,'Segoe UI',sans-serif}
+.wrap{max-width:720px;margin:0 auto;padding:20px 16px 56px}
+h1{font-size:clamp(2.4rem,9vw,4rem);line-height:.95;font-weight:800;letter-spacing:-.03em;margin:8px 0 6px}
+h2{font-size:1.5rem;font-weight:800;margin:0 0 6px;letter-spacing:-.01em}
+h3{font-size:1.05rem;margin:22px 0 8px}
+.sub{color:var(--mu);margin:0 0 18px;max-width:46ch}
+nav{display:flex;gap:4px;border-bottom:2px solid var(--ln);margin-bottom:20px}
+nav button{flex:1;background:none;border:0;border-bottom:3px solid transparent;margin-bottom:-2px;padding:10px 4px;font:600 .95rem inherit;font-family:inherit;color:var(--mu);cursor:pointer}
+nav button[aria-selected=true]{color:var(--ink);border-bottom-color:var(--tom)}
+button,input,textarea{font-family:inherit;font-size:1rem;color:inherit}
+:focus-visible{outline:3px solid var(--bas);outline-offset:2px}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin:6px 0 14px}
+.chip{border:1.5px solid var(--ln);background:var(--sf);border-radius:99px;padding:7px 14px;cursor:pointer;font-weight:600}
+.chip[aria-pressed=true]{background:var(--bas);border-color:var(--bas);color:var(--sf)}
+label.l{display:block;font-weight:600;margin-top:6px}
+input[type=text],textarea{width:100%;border:1.5px solid var(--ln);background:var(--sf);border-radius:10px;padding:11px 13px;margin-top:6px}
+.btn{background:var(--tom);color:var(--on);border:0;border-radius:10px;padding:12px 18px;font-weight:700;cursor:pointer}
+.btn.alt{background:var(--sf);color:var(--ink);border:1.5px solid var(--ln)}
+.btn:disabled{opacity:.5;cursor:default}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-top:12px}
+.card{background:var(--sf);border:1.5px solid var(--ln);border-radius:14px;padding:16px;margin:12px 0}
+.card h2{margin-bottom:2px}
+.meta{color:var(--mu);font-size:.92rem;margin:0 0 6px}
+.tag{display:inline-block;background:var(--bt);color:var(--bas);font-weight:600;font-size:.82rem;border-radius:6px;padding:1px 8px;margin-right:6px}
+ul.ing,ol.st{padding-left:0;list-style:none;margin:0}
+ul.ing li{padding:8px 0;border-bottom:1px solid var(--ln)}
+ol.st{counter-reset:s}
+ol.st li{counter-increment:s;padding:10px 0 10px 40px;position:relative;border-bottom:1px solid var(--ln)}
+ol.st li::before{content:counter(s);position:absolute;left:0;top:9px;width:28px;height:28px;border-radius:50%;background:var(--tom);color:var(--on);font-weight:800;text-align:center;line-height:28px;font-size:.9rem}
+.step{display:flex;align-items:center;gap:10px}
+.step b{min-width:2ch;text-align:center}
+.step button{width:36px;height:36px;border-radius:50%;border:1.5px solid var(--ln);background:var(--sf);cursor:pointer;font-weight:800}
+.li{display:flex;gap:10px;align-items:center;padding:10px 0;border-bottom:1px solid var(--ln)}
+.li input{width:22px;height:22px;accent-color:var(--bas)}
+.li.done span{text-decoration:line-through;color:var(--mu)}
+.log{display:flex;flex-direction:column;gap:10px;margin-bottom:14px}
+.m{max-width:88%;padding:10px 14px;border-radius:14px;white-space:pre-wrap}
+.m.u{align-self:flex-end;background:var(--bas);color:var(--sf)}
+.m.a{align-self:flex-start;background:var(--sf);border:1.5px solid var(--ln)}
+.small{font-size:.88rem;color:var(--mu)}
+a{color:var(--bas);font-weight:600}
+.cook{position:fixed;inset:0;z-index:20;background:var(--bg);display:flex;flex-direction:column;gap:6px;padding:calc(18px + env(safe-area-inset-top,0px)) 20px calc(18px + env(safe-area-inset-bottom,0px));overflow:auto}
+.cook .big{flex:1;font-size:clamp(1.4rem,5.5vw,2.1rem);line-height:1.3;font-weight:600;margin:24px 0;max-width:30ch}
+#tl{font-size:1.4rem;font-variant-numeric:tabular-nums}
+[hidden]{display:none!important}
+@media (prefers-reduced-motion:no-preference){.pop{animation:pop .25s ease-out}@keyframes pop{from{transform:scale(.97);opacity:.4}}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<h1>What’s for tea?</h1>
+<p class="sub">Pick a simple dinner, see exactly how to cook it, get the shopping list, or ask the chef to invent something new.</p>
+<nav role="tablist">
+<button role="tab" id="t-decide" aria-selected="true">Decide</button>
+<button role="tab" id="t-list" aria-selected="false">Shopping list</button>
+<button role="tab" id="t-chat" aria-selected="false">Chef chat</button>
+</nav>
+
+<section id="decide">
+<div id="finder">
+<label class="l">How long have you got?</label>
+<div class="chips" id="fTime"></div>
+<label class="l">Eating</label>
+<div class="chips" id="fDiet"></div>
+<label class="l">Show</label>
+<div class="chips" id="fSaved"></div>
+<label class="l" for="have">What’s in your fridge? <span class="small">(optional, separate with commas)</span></label>
+<input type="text" id="have" placeholder="e.g. eggs, rice, tomatoes">
+<div class="row">
+<button class="btn" id="go">Show me ideas</button>
+<button class="btn alt" id="surprise">Surprise me</button>
+<button class="btn alt" id="plan">Plan my week</button>
+</div>
+<div id="results"></div>
+</div>
+<div id="recipe" hidden></div>
+</section>
+
+<section id="list" hidden></section>
+
+<section id="chat" hidden>
+<h2>Chef chat</h2>
+<p class="sub">Tell the chef what you’ve got, what you fancy or what you can’t eat, and it will invent a recipe for you.</p>
+<div class="chips" id="starters"></div>
+<div class="log" id="log" aria-live="polite"></div>
+<div class="row" style="margin-top:0">
+<input type="text" id="msg" placeholder="e.g. a cheap vegan dinner using lentils" style="flex:1;margin-top:0" aria-label="Message the chef">
+<button class="btn" id="send">Send</button>
+</div>
+<p class="small" id="chatnote"></p>
+</section>
+
+<p class="small" style="margin-top:36px">Built-in recipes are simple classics. Chef chat creates new ones with AI, so check allergens and cooking times yourself.</p>
+</div>
+<div class="cook" id="cook" hidden></div>
+
+<script>
+const $=s=>document.querySelector(s);
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const store={get(k,d){try{const v=localStorage.getItem(k);return v?JSON.parse(v):d}catch(e){return d}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}};
+
+const R=[
+{id:'spag',name:'Garlic & chilli spaghetti',mins:20,diet:'vegan',desc:'Store-cupboard pasta in a glossy garlic and olive oil sauce.',ing:[[200,'g','spaghetti'],[4,'','garlic cloves'],[1,'','red chilli (or ½ tsp chilli flakes)'],[4,'tbsp','olive oil'],[1,'handful','fresh parsley'],[1,'','lemon']],steps:['Boil a big pan of well-salted water. Cook the spaghetti for 1 minute less than the packet says, then scoop out a mug of the cooking water before draining.','Thinly slice the garlic and chilli.','Warm the olive oil in a large frying pan on a low heat. Add the garlic and chilli and cook for about 2 minutes until the garlic is pale gold. Do not let it brown or it turns bitter.','Add the drained spaghetti and a splash of the cooking water. Toss over the heat for 1 minute until the sauce coats the pasta.','Chop the parsley, stir it in, squeeze over some lemon juice and serve.']},
+{id:'rice',name:'Egg fried rice',mins:15,diet:'veggie',desc:'Fast, filling and a great way to use leftover rice.',ing:[[200,'g','cooked rice (cold is best)'],[3,'','eggs'],[100,'g','frozen peas'],[3,'','spring onions'],[2,'tbsp','soy sauce'],[1,'tbsp','vegetable oil']],steps:['Slice the spring onions. Beat the eggs in a small bowl.','Heat the oil in a wok or large frying pan on a high heat. Add the peas and the white parts of the spring onions and stir-fry for 1 minute.','Push everything to one side, pour in the eggs and stir until just scrambled.','Tip in the rice and soy sauce. Stir-fry for 3 to 4 minutes until piping hot, breaking up any clumps.','Top with the green spring onion and serve straight away.']},
+{id:'tray',name:'Chicken & potato traybake',mins:45,diet:'any',desc:'One tray, almost no washing up, and it looks after itself in the oven.',ing:[[4,'','chicken thighs, bone-in'],[500,'g','baby potatoes'],[1,'','red onion'],[1,'','courgette'],[2,'tbsp','olive oil'],[1,'tsp','smoked paprika'],[1,'','lemon']],steps:['Heat the oven to 200°C (180°C fan). Halve the potatoes and cut the onion and courgette into chunky pieces.','Put the vegetables on a large roasting tray with the oil, paprika, salt and pepper and mix well.','Nestle the chicken on top, skin side up, and season it too.','Roast for 35 to 40 minutes until the chicken is golden and its juices run clear with no pink, and the potatoes are crisp.','Squeeze the lemon over the tray and serve.']},
+{id:'curry',name:'Chickpea & tomato curry',mins:30,diet:'vegan',desc:'A mild, hearty curry made from tins and a spice jar.',ing:[[1,'','onion'],[2,'','garlic cloves'],[1,'tbsp','curry powder'],[1,'tin','chopped tomatoes (400g)'],[1,'tin','chickpeas (400g)'],[100,'g','spinach'],[1,'tbsp','vegetable oil'],[150,'g','basmati rice']],steps:['Start the rice following the packet instructions.','Dice the onion and crush the garlic. Fry the onion in the oil for 5 minutes until soft.','Add the garlic and curry powder and stir for 1 minute.','Pour in the tomatoes and the drained chickpeas with half a tin of water. Simmer for 12 minutes until thick.','Stir in the spinach until it wilts, taste for salt and serve over the rice.']},
+{id:'quesa',name:'Cheesy pepper quesadillas',mins:15,diet:'veggie',desc:'Crispy outside, melted inside, ready before you get bored.',ing:[[2,'','large tortilla wraps'],[120,'g','cheddar, grated'],[1,'','pepper'],[2,'','spring onions'],[1,'tsp','oil']],steps:['Finely slice the pepper and spring onions.','Sprinkle cheese and veg over half of each wrap, then fold in half.','Heat the oil in a frying pan on a medium heat. Cook each quesadilla for 2 to 3 minutes per side until golden and the cheese has melted.','Cut into wedges and serve with salsa or sour cream.']},
+{id:'mush',name:'Creamy mushroom pasta',mins:25,diet:'veggie',desc:'Rich and comforting with only a handful of ingredients.',ing:[[250,'g','penne'],[250,'g','mushrooms'],[2,'','garlic cloves'],[100,'ml','double cream'],[1,'tbsp','butter'],[30,'g','hard cheese, grated']],steps:['Cook the penne in salted boiling water following the packet, saving a mug of water before draining.','Slice the mushrooms. Melt the butter in a large pan on a high heat and fry the mushrooms for 6 to 8 minutes without stirring too much, until browned.','Add the crushed garlic for 1 minute, then pour in the cream and let it bubble for 2 minutes.','Stir in the pasta and a splash of the cooking water, then the cheese. Season and serve.']},
+{id:'saus',name:'Sausage & bean casserole',mins:40,diet:'any',desc:'Cosy, cheap and a good one for leftovers the next day.',ing:[[6,'','sausages'],[1,'','onion'],[1,'','carrot'],[1,'tin','chopped tomatoes (400g)'],[1,'tin','cannellini beans (400g)'],[1,'tsp','mixed herbs']],steps:['Brown the sausages in a large pan for 8 minutes, turning, then take them out.','In the same pan, fry the chopped onion and carrot for 6 minutes.','Add the tomatoes, drained beans, herbs and half a tin of water. Return the sausages.','Simmer with a lid half on for 20 minutes until the sauce is thick and the sausages are cooked through with no pink.','Serve with mash or crusty bread.']},
+{id:'salm',name:'Lemon salmon with potatoes & greens',mins:30,diet:'any',desc:'A healthy plate that looks far fancier than it is.',ing:[[2,'','salmon fillets'],[400,'g','new potatoes'],[150,'g','green beans'],[1,'','lemon'],[1,'tbsp','butter']],steps:['Boil the potatoes in salted water for 12 to 15 minutes until tender. Add the green beans for the last 4 minutes, then drain.','Meanwhile melt the butter in a frying pan on a medium heat. Season the salmon and cook skin side down for 4 minutes, then flip for 2 to 3 minutes until opaque all the way through.','Squeeze half the lemon into the pan and cut the rest into wedges.','Serve the salmon on the potatoes and beans with the pan juices spooned over.']},
+{id:'noo',name:'Veggie noodle stir-fry',mins:20,diet:'vegan',desc:'A quick bag-of-veg dinner with a sweet, salty, spicy sauce.',ing:[[2,'nests','egg-free noodles'],[300,'g','stir-fry vegetable mix'],[2,'tbsp','soy sauce'],[1,'tbsp','sweet chilli sauce'],[1,'thumb','fresh ginger'],[1,'tbsp','vegetable oil']],steps:['Cook the noodles following the packet, drain and rinse under cold water.','Mix the soy sauce and sweet chilli sauce in a cup. Grate the ginger.','Heat the oil in a wok on a high heat, add the veg and ginger and stir-fry for 4 minutes.','Add the noodles and sauce and toss for 2 minutes until hot.']}
+];
+
+const S={time:0,diet:'any',saved:'0',recipe:null,serves:2,tab:'decide'};
+let ai=store.get('ai',[]);
+let list=store.get('list',[]);
+let chat=store.get('chat',[]);
+let fav=store.get('fav',[]),ck=0,tmr=null,wl=null;
+let busy=false,ctl=null;
+const all=()=>R.concat(ai);
+const dietName=d=>d==='vegan'?'Vegan':d==='veggie'?'Vegetarian':'Meat or fish';
+
+function fmt(n){return String(Math.round(n*10)/10)}
+function ingLine(i,sc){const q=i[0]*sc;let u=i[1]||'';if(u&&q>1&&/^(tin|nest|handful|thumb)$/.test(u))u+=u==='handful'?'s':'s';return `${fmt(q)}${u?' '+esc(u):''} ${esc(i[2])}`}
+
+/* Tabs */
+function tab(t){S.tab=t;['decide','list','chat'].forEach(x=>{$('#'+x).hidden=x!==t;$('#t-'+x).setAttribute('aria-selected',x===t)});if(t==='list')drawList();if(t==='chat')drawChat();window.scrollTo(0,0)}
+['decide','list','chat'].forEach(t=>$('#t-'+t).onclick=()=>tab(t));
+function updateTabs(){$('#t-list').textContent='Shopping list'+(list.filter(i=>!i.done).length?' ('+list.filter(i=>!i.done).length+')':'')}
+
+/* Finder */
+function chips(el,opts,key){el.innerHTML=opts.map(o=>`<button class="chip" data-v="${o[0]}" aria-pressed="${S[key]===o[0]}">${o[1]}</button>`).join('');el.onclick=e=>{const b=e.target.closest('.chip');if(!b)return;const v=b.dataset.v;S[key]=key==='time'?+v:v;chips(el,opts,key)}}
+chips($('#fTime'),[[0,'Any time'],[15,'15 min'],[30,'30 min'],[60,'1 hour']],'time');
+chips($('#fDiet'),[['any','Anything'],['veggie','Vegetarian'],['vegan','Vegan']],'diet');
+chips($('#fSaved'),[['0','All recipes'],['1','Saved only']],'saved');
+
+function pool(){return all().filter(r=>(!S.time||r.mins<=S.time)&&(S.saved!=='1'||fav.includes(r.id))&&(S.diet==='any'||(S.diet==='veggie'?r.diet!=='any':r.diet==='vegan')))}
+function haveList(){return $('#have').value.toLowerCase().split(/[,\n]+/).map(s=>s.trim()).filter(Boolean)}
+function score(r,h){return h.filter(x=>r.ing.some(i=>i[2].toLowerCase().includes(x))).length}
+function ideas(){
+  const h=haveList();
+  const l=pool().map(r=>({r,s:score(r,h),k:score(r,h)+Math.random()*.5})).sort((a,b)=>b.k-a.k).slice(0,3);
+  $('#results').innerHTML=l.length?l.map(({r,s})=>`<div class="card pop"><h2>${esc(r.name)}</h2><p class="meta"><span class="tag">${r.mins} min</span><span class="tag">${dietName(r.diet)}</span>${s?`Uses ${s} of your ingredients`:''}</p><p style="margin:6px 0 12px">${esc(r.desc)}</p><button class="btn" data-id="${r.id}">Cook this</button></div>`).join('')+`<button class="btn alt" id="more">Show different ideas</button>`:'<p class="card">Nothing matches those filters yet. Try a longer time or ask the Chef chat to make something.</p>';
+  const m=$('#more');if(m)m.onclick=ideas;
+}
+$('#go').onclick=ideas;
+$('#results').onclick=e=>{const b=e.target.closest('[data-id]');if(b)open(b.dataset.id)};
+$('#surprise').onclick=()=>{const p=pool();if(p.length)open(p[Math.floor(Math.random()*p.length)].id)};
+$('#plan').onclick=plan;
+function plan(){
+  const p=pool().sort(()=>Math.random()-.5).slice(0,5);
+  if(!p.length){ideas();return}
+  const days=['Mon','Tue','Wed','Thu','Fri'];
+  $('#results').innerHTML='<h3>Your week</h3>'+p.map((r,i)=>`<div class="card pop"><p class="meta"><span class="tag">${days[i]}</span>${r.mins} min</p><h2>${esc(r.name)}</h2><button class="btn alt" data-id="${r.id}">Open recipe</button></div>`).join('')+'<div class="row"><button class="btn" id="pall">Add all to shopping list</button><button class="btn alt" id="pagain">Shuffle</button></div><p class="small" id="pn"></p>';
+  $('#pall').onclick=()=>{p.forEach(r=>addToList(r,2/(r.serves||2)));$('#pn').textContent='Added everything for '+p.length+' dinners for 2 people.'};
+  $('#pagain').onclick=plan;
+}
+
+/* Recipe */
+function open(id){const r=all().find(x=>x.id===id);if(!r)return;S.recipe=r;S.serves=r.serves||2;$('#finder').hidden=true;$('#recipe').hidden=false;drawRecipe();window.scrollTo(0,0)}
+function drawRecipe(){
+  const r=S.recipe,sc=S.serves/(r.serves||2);
+  $('#recipe').innerHTML=`<button class="btn alt" id="back">Back to ideas</button>
+  <h2 style="margin-top:16px;font-size:2rem">${esc(r.name)}</h2>
+  <p class="meta"><span class="tag">${r.mins} min</span><span class="tag">${dietName(r.diet)}</span>${r.ai?'<span class="tag">Chef’s own</span>':''}</p>
+  <p>${esc(r.desc||'')}</p>
+  <h3>Servings</h3>
+  <div class="step"><button id="dn" aria-label="Fewer servings">−</button><b>${S.serves}</b><button id="up" aria-label="More servings">+</button></div>
+  <h3>What to buy</h3>
+  <ul class="ing">${r.ing.map(i=>`<li>${ingLine(i,sc)}</li>`).join('')}</ul>
+  <div class="row"><button class="btn" id="add">Add to shopping list</button><button class="btn alt" id="fav">${fav.includes(r.id)?'♥ Saved':'♡ Save'}</button><span class="small" id="added"></span></div>
+  <h3>How to cook it</h3>
+  <div class="row" style="margin:0 0 8px"><button class="btn" id="cookb">Start cook mode</button></div>
+  <ol class="st">${r.steps.map(s=>`<li>${esc(s)}</li>`).join('')}</ol>
+  <div class="row"><button class="btn alt" id="twist">Ask the chef for a twist</button></div>
+  <p class="small" style="margin-top:16px"><a href="https://www.bbcgoodfood.com/search?q=${encodeURIComponent(r.name)}" target="_blank" rel="noopener">Find more versions on BBC Good Food</a></p>`;
+  $('#back').onclick=()=>{$('#recipe').hidden=true;$('#finder').hidden=false};
+  $('#dn').onclick=()=>{if(S.serves>1){S.serves--;drawRecipe()}};
+  $('#up').onclick=()=>{if(S.serves<12){S.serves++;drawRecipe()}};
+  $('#add').onclick=()=>{addToList(r,sc);$('#added').textContent='Added. See the Shopping list tab.'};
+  $('#twist').onclick=()=>{tab('chat');$('#msg').value=`Give me a unique twist on ${r.name}`;$('#msg').focus()};
+  $('#fav').onclick=()=>{fav=fav.includes(r.id)?fav.filter(x=>x!==r.id):fav.concat(r.id);store.set('fav',fav);$('#fav').textContent=fav.includes(r.id)?'♥ Saved':'♡ Save'};
+  $('#cookb').onclick=cook;
+}
+
+/* Cook mode */
+function stopT(){clearInterval(tmr);tmr=null}
+async function cook(){ck=0;$('#cook').hidden=false;try{wl=await navigator.wakeLock.request('screen')}catch(e){}drawCook()}
+function closeCook(){stopT();$('#cook').hidden=true;try{wl&&wl.release()}catch(e){}wl=null}
+function beep(){try{const c=new AudioContext(),o=c.createOscillator();o.connect(c.destination);o.frequency.value=880;o.start();setTimeout(()=>o.stop(),700)}catch(e){}}
+function drawCook(){
+  stopT();const r=S.recipe,s=r.steps[ck],last=ck===r.steps.length-1;
+  const m=s.match(/(\d+)(?:\s*(?:to|-)\s*(\d+))?\s*minutes?/i);
+  $('#cook').innerHTML=`<div class="row" style="justify-content:space-between;margin:0"><b>Step ${ck+1} of ${r.steps.length}</b><button class="btn alt" id="cx">Close</button></div><p class="big">${esc(s)}</p>${m?`<div class="row"><button class="btn alt" id="tm">Start ${m[2]||m[1]} minute timer</button><b id="tl"></b></div>`:''}<div class="row"><button class="btn alt" id="pv" ${ck?'':'disabled'}>Previous</button><button class="btn" id="nx">${last?'Finish':'Next step'}</button></div>`;
+  $('#cx').onclick=closeCook;
+  $('#pv').onclick=()=>{ck--;drawCook()};
+  $('#nx').onclick=()=>{if(last)closeCook();else{ck++;drawCook()}};
+  if(m)$('#tm').onclick=()=>{let t=(+(m[2]||m[1]))*60;stopT();const show=()=>{$('#tl').textContent=Math.floor(t/60)+':'+String(t%60).padStart(2,'0')};show();tmr=setInterval(()=>{t--;if(t<=0){stopT();$('#tl').textContent='Time’s up!';try{navigator.vibrate(500)}catch(e){}beep()}else show()},1000)};
+}
+
+/* Shopping list */
+function addToList(r,sc){
+  r.ing.forEach(i=>{const q=i[0]*sc,u=i[1]||'',n=i[2];const f=list.find(x=>x.n===n&&x.u===u&&!x.done);if(f)f.q+=q;else list.push({n,u,q,done:false})});
+  store.set('list',list);updateTabs();
+}
+function drawList(){
+  const el=$('#list');
+  if(!list.length){el.innerHTML='<h2>Shopping list</h2><p class="sub">Nothing here yet. Open a recipe and choose “Add to shopping list”.</p>';return}
+  el.innerHTML=`<h2>Shopping list</h2>${list.map((x,i)=>`<label class="li${x.done?' done':''}"><input type="checkbox" data-i="${i}" ${x.done?'checked':''}><span>${ingLine([x.q,x.u,x.n],1)}</span></label>`).join('')}
+  <div class="row"><button class="btn alt" id="rm">Remove ticked</button><button class="btn alt" id="cp">Copy list</button><button class="btn alt" id="clr">Clear all</button></div><p class="small" id="cpn"></p>`;
+  el.onchange=e=>{const c=e.target.closest('[data-i]');if(c){list[+c.dataset.i].done=c.checked;store.set('list',list);updateTabs();drawList()}};
+  $('#rm').onclick=()=>{list=list.filter(x=>!x.done);store.set('list',list);updateTabs();drawList()};
+  $('#clr').onclick=()=>{list=[];store.set('list',list);updateTabs();drawList()};
+  $('#cp').onclick=async()=>{const t=list.filter(x=>!x.done).map(x=>'- '+ingLine([x.q,x.u,x.n],1).replace(/&amp;/g,'&')).join('\n');try{await navigator.clipboard.writeText(t);$('#cpn').textContent='Copied.'}catch(e){$('#cpn').textContent='Could not copy. Select the text and copy it instead.'}};
+}
+
+/* Chef chat */
+const RULES=`You are a friendly, creative home-cooking chef inside a recipe app for UK home cooks. Use metric units and ordinary supermarket ingredients. Keep recipes simple: about 10 ingredients at most, clear beginner steps with times and heat levels, and safe cooking temperatures for meat. Respect any allergies or diets the person mentions. Reply with ONLY a JSON object and no other text, in this shape: {"reply":"one to three friendly sentences","recipe":null or {"name":"","mins":30,"serves":2,"diet":"vegan or veggie or any","desc":"one sentence","ing":[[200,"g","ingredient name"]],"steps":["step one"]}}. ing items are [number, unit (or empty string), name]. Only include a recipe when the person wants a dish or idea; otherwise set recipe to null and just chat or ask one question. Make dishes original and appealing, not generic.`;
+const starters=['Use what’s in my fridge','Something cheap and filling','A vegan dinner in 20 minutes','A fun twist on pasta'];
+$('#starters').innerHTML=starters.map(s=>`<button class="chip">${s}</button>`).join('');
+$('#starters').onclick=e=>{const b=e.target.closest('.chip');if(b){$('#msg').value=b.textContent;$('#msg').focus()}};
+
+function drawChat(thinking){
+  const log=$('#log');
+  log.innerHTML=chat.map((m,i)=>m.r==='u'?`<div class="m u">${esc(m.t)}</div>`:`<div class="m a">${esc(m.t)}${m.id?`<div class="row"><button class="btn" data-o="${m.id}">Open recipe</button></div>`:''}</div>`).join('')+(thinking?'<div class="m a">Thinking…</div>':'');
+  log.onclick=e=>{const b=e.target.closest('[data-o]');if(b){tab('decide');open(b.dataset.o)}};
+  if(!chat.length)log.innerHTML='<p class="small">No messages yet. Pick a starter above or type your own.</p>';
+}
+function parse(t){const s=t.replace(/```json|```/g,'').trim();const a=s.indexOf('{'),b=s.lastIndexOf('}');return JSON.parse(s.slice(a,b+1))}
+function normalise(x){
+  const ing=(x.ing||[]).filter(i=>Array.isArray(i)&&i.length>=3).map(i=>[Number(i[0])||1,String(i[1]||''),String(i[2])]);
+  const steps=(x.steps||[]).map(String);
+  if(!x.name||!ing.length||!steps.length)return null;
+  const d=/vegan/i.test(x.diet)?'vegan':/veg/i.test(x.diet)?'veggie':'any';
+  return {id:'ai'+Date.now(),name:String(x.name),mins:Number(x.mins)||30,serves:Number(x.serves)||2,diet:d,desc:String(x.desc||''),ing,steps,ai:true};
+}
+const errs={not_granted:'You need to allow Claude to use the chef. Refresh the page and choose Allow when asked.',rate_limited:'Too many requests at once. Wait a moment and try again.'};
+async function send(){
+  const text=$('#msg').value.trim();if(!text||busy)return;
+  busy=true;$('#send').disabled=true;$('#msg').value='';$('#chatnote').textContent='';
+  chat.push({r:'u',t:text});drawChat(true);
+  try{
+    const sample=await claude.use('sample');
+    if(!sample)throw {code:'none'};
+    const turns=chat.slice(-10).map(m=>({role:m.r==='u'?'user':'assistant',content:m.raw||m.t}));
+    while(turns.length&&turns[0].role!=='user')turns.shift();
+    const {text:out}=await sample([{role:'user',content:RULES},...turns],{cache:false,modelTier:'default'});
+    let p;try{p=parse(out)}catch(e){p={reply:out,recipe:null}}
+    let id=null;
+    if(p.recipe){const r=normalise(p.recipe);if(r){ai.unshift(r);ai=ai.slice(0,12);store.set('ai',ai);id=r.id}}
+    chat.push({r:'a',t:p.reply||'Here you go.',raw:out,id});
+  }catch(e){
+    chat.pop();$('#msg').value=text;
+    $('#chatnote').textContent=e.code==='none'?'The chef only works when this page is opened inside Claude. The recipes on the Decide tab work everywhere.':(errs[e.code]||'Something went wrong. Please try again.');
+  }
+  chat=chat.slice(-30);store.set('chat',chat.map(({r,t,id})=>({r,t,id})));
+  busy=false;$('#send').disabled=false;drawChat();
+}
+$('#send').onclick=send;
+$('#msg').onkeydown=e=>{if(e.key==='Enter')send()};
+
+updateTabs();ideas();
+</script>
+</body>
+</html>
